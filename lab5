@@ -1,0 +1,176 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+//修改后的 cpuio_bound() 函数声明
+void cpuio_bound(int last, int cpu_time, int io_time);
+
+int main() {
+    int num_processes = 3;  //所需进程数
+
+    for (int i = 0; i < num_processes; ++i) {
+        pid_t pid = fork();
+
+        if (pid == -1) {
+            //错误处理
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+        else if (pid == 0) {
+            //子程序
+            cpuio_bound(10, i + 1, 2 * (i + 1));  //调用个性化 cpuio_bound
+            exit(EXIT_SUCCESS);
+        }
+    }
+
+    //父进程
+    for (int i = 0; i < num_processes; ++i) {
+        int status;
+        wait(&status);  //等待全部子程序结束
+    }
+
+    printf("All child processes have finished.\n");
+
+    return 0;
+}
+
+//定义修改后的 cpuio_bound() 函数
+void cpuio_bound(int last, int cpu_time, int io_time) {
+    int current_time = 0;
+
+    while (current_time < last) {
+        if (cpu_time > 0) {
+            printf("PID %d - CPU 工作 %d 秒\n", getpid(), cpu_time);
+            current_time += cpu_time;
+        }
+
+        if (io_time > 0) {
+            printf("PID %d - I/O 工作  %d 秒\n", getpid(), io_time);
+            current_time += io_time;
+        }
+    }
+}
+
+
+// kernel/fork.c
+
+// ...
+
+int do_fork(...) {
+    //现有代码
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+//修改后的 cpuio_bound() 函数声明
+void cpuio_bound(int last, int cpu_time, int io_time);
+
+int main() {
+    int num_processes = 3;  //所需进程数
+
+    for (int i = 0; i < num_processes; ++i) {
+        pid_t pid = fork();
+
+        if (pid == -1) {
+            //错误处理
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+        else if (pid == 0) {
+            //子程序
+            cpuio_bound(10, i + 1, 2 * (i + 1));  //调用个性化 cpuio_bound
+            exit(EXIT_SUCCESS);
+        }
+    }
+
+    //父进程
+    for (int i = 0; i < num_processes; ++i) {
+        int status;
+        wait(&status);  //等待全部子程序结束
+    }
+
+    printf("All child processes have finished.\n");
+
+    return 0;
+}
+
+//定义修改后的 cpuio_bound() 函数
+void cpuio_bound(int last, int cpu_time, int io_time) {
+    int current_time = 0;
+
+    while (current_time < last) {
+        if (cpu_time > 0) {
+            printf("PID %d - CPU 工作 %d 秒\n", getpid(), cpu_time);
+            current_time += cpu_time;
+        }
+
+        if (io_time > 0) {
+            printf("PID %d - I/O 工作  %d 秒\n", getpid(), io_time);
+            current_time += io_time;
+        }
+    }
+}
+
+
+    //添加新代码: 载入运行轨迹
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+//修改后的 cpuio_bound() 函数声明
+void cpuio_bound(int last, int cpu_time, int io_time);
+
+int main() {
+    int num_processes = 4;  //所需进程数
+
+    for (int i = 0; i < num_processes; ++i) {
+        pid_t pid = fork();
+
+        if (pid == -1) {
+            //错误处理
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+        else if (pid == 0) {
+            //子程序
+            cpuio_bound(10, i + 1, 2 * (i + 1));  //调用个性化 cpuio_bound
+            exit(EXIT_SUCCESS);
+        }
+    }
+
+    //父进程
+    for (int i = 0; i < num_processes; ++i) {
+        int status;
+        wait(&status);  //等待全部子程序结束
+    }
+
+    printf("All child processes have finished.\n");
+
+    return 0;
+}
+
+//定义修改后的 cpuio_bound() 函数
+void cpuio_bound(int last, int cpu_time, int io_time) {
+    int current_time = 0;
+
+    while (current_time < last) {
+        if (cpu_time > 0) {
+            printf("PID %d - CPU 工作 %d 秒\n", getpid(), cpu_time);
+            current_time += cpu_time;
+        }
+
+        if (io_time > 0) {
+            printf("PID %d - I/O 工作  %d 秒\n", getpid(), io_time);
+            current_time += io_time;
+        }
+    }
+}
+    printk("PID: %d, State: N, Time: %ld\n", current->pid, jiffies);
+
+    
+
+    return child_pid;
+}
